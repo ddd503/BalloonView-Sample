@@ -14,10 +14,14 @@ class BalloonView: UIView {
     // 三角部分の高さ
     let triangleHeight: CGFloat
 
-    init(frame: CGRect, triangleBottomLength: CGFloat = 30, triangleHeight: CGFloat = 20) {
+    init(focusPoint: CGPoint, viewSize: CGSize = CGSize(width: 120, height: 80), triangleBottomLength: CGFloat = 25, triangleHeight: CGFloat = 20) {
         self.triangleBottomLength = triangleBottomLength
         self.triangleHeight = triangleHeight
+        let frame = CGRect(origin: CGPoint(x: focusPoint.x - viewSize.width / 2,
+                                           y: focusPoint.y - viewSize.height),
+                           size: viewSize)
         super.init(frame: frame)
+        backgroundColor = .clear
     }
 
     required init?(coder aDecoder: NSCoder) {

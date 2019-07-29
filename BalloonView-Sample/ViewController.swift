@@ -12,11 +12,7 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let balloon = BalloonView(frame: CGRect(x: 200,
-                                                y: 200,
-                                                width: view.bounds.size.width / 3,
-                                                height: 100))
-        balloon.backgroundColor = .clear
+        let balloon = BalloonView(focusPoint: view.center)
         view.addSubview(balloon)
 
         let label = UILabel(frame: balloon.bounds)
