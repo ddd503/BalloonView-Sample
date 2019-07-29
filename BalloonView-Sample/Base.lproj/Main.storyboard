@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -9,16 +13,89 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="BalloonView_Sample" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lwz-qg-k2A" userLabel="redView">
+                                <rect key="frame" x="0.0" y="0.0" width="207" height="448"/>
+                                <color key="backgroundColor" red="1" green="0.66292410585213946" blue="0.62241780369239263" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="hVW-fJ-tuu" appends="YES" id="WXO-aA-rBO"/>
+                                </connections>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yNo-Ps-9d3" userLabel="greenView">
+                                <rect key="frame" x="0.0" y="448" width="207" height="448"/>
+                                <color key="backgroundColor" red="0.43165897020475585" green="1" blue="0.41121184144628209" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="MmA-2y-QdW" appends="YES" id="pHg-b1-grl"/>
+                                </connections>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y1i-xc-X8r" userLabel="blueView">
+                                <rect key="frame" x="207" y="0.0" width="207" height="448"/>
+                                <color key="backgroundColor" red="0.6175474343485613" green="0.87126355527389832" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="Nea-7Q-2KB" appends="YES" id="6bq-1o-6oh"/>
+                                </connections>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="28F-El-lYq" userLabel="yellowView">
+                                <rect key="frame" x="207" y="448" width="207" height="448"/>
+                                <color key="backgroundColor" red="1" green="0.97064839347070975" blue="0.61875225094646802" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="whW-yZ-wFh" appends="YES" id="IAe-lX-PTV"/>
+                                </connections>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="yNo-Ps-9d3" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="5R0-tU-mWo"/>
+                            <constraint firstItem="Y1i-xc-X8r" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="8fe-hg-Xka"/>
+                            <constraint firstItem="lwz-qg-k2A" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="Bvs-rT-RV0"/>
+                            <constraint firstItem="lwz-qg-k2A" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.5" id="EjF-DM-Tbh"/>
+                            <constraint firstItem="lwz-qg-k2A" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="FhL-Fk-sjb"/>
+                            <constraint firstAttribute="bottom" secondItem="28F-El-lYq" secondAttribute="bottom" id="GPk-9y-9mJ"/>
+                            <constraint firstAttribute="trailing" secondItem="28F-El-lYq" secondAttribute="trailing" id="IGq-az-MEQ"/>
+                            <constraint firstItem="yNo-Ps-9d3" firstAttribute="width" secondItem="lwz-qg-k2A" secondAttribute="width" id="J71-z3-Bcr"/>
+                            <constraint firstItem="yNo-Ps-9d3" firstAttribute="height" secondItem="lwz-qg-k2A" secondAttribute="height" id="NBe-M9-vgF"/>
+                            <constraint firstItem="Y1i-xc-X8r" firstAttribute="width" secondItem="lwz-qg-k2A" secondAttribute="width" id="OCA-al-khx"/>
+                            <constraint firstItem="lwz-qg-k2A" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.5" id="TXn-Se-2HV"/>
+                            <constraint firstAttribute="bottom" secondItem="yNo-Ps-9d3" secondAttribute="bottom" id="TbD-hg-TzR"/>
+                            <constraint firstItem="28F-El-lYq" firstAttribute="height" secondItem="lwz-qg-k2A" secondAttribute="height" id="aLh-9C-hQO"/>
+                            <constraint firstItem="Y1i-xc-X8r" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailing" id="avN-yM-7KY"/>
+                            <constraint firstItem="Y1i-xc-X8r" firstAttribute="height" secondItem="lwz-qg-k2A" secondAttribute="height" id="fus-gy-66W"/>
+                            <constraint firstItem="28F-El-lYq" firstAttribute="width" secondItem="lwz-qg-k2A" secondAttribute="width" id="l2i-SQ-qCj"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="hVW-fJ-tuu">
+                    <connections>
+                        <action selector="tappedRedView:" destination="BYZ-38-t0r" id="1pn-1v-JaA"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="Nea-7Q-2KB">
+                    <connections>
+                        <action selector="tappedBlueView:" destination="BYZ-38-t0r" id="lNX-cu-7pc"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="MmA-2y-QdW">
+                    <connections>
+                        <action selector="tappedGreenView:" destination="BYZ-38-t0r" id="Ufp-ta-pSn"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="whW-yZ-wFh">
+                    <connections>
+                        <action selector="tappedYellowView:" destination="BYZ-38-t0r" id="wQ5-N7-jXF"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
+            <point key="canvasLocation" x="137.68115942028987" y="126.5625"/>
         </scene>
     </scenes>
 </document>

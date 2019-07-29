@@ -12,9 +12,20 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+
     }
 
+    @IBAction func tappedRedView(_ sender: UITapGestureRecognizer) {
+    }
 
+    @IBAction func tappedBlueView(_ sender: UITapGestureRecognizer) {
+    }
+
+    @IBAction func tappedGreenView(_ sender: UITapGestureRecognizer) {
+    }
+
+    @IBAction func tappedYellowView(_ sender: UITapGestureRecognizer) {
+    }
+    
 }
 
