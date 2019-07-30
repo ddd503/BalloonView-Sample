@@ -18,11 +18,13 @@ final class BalloonView: UIView {
     // 吹き出しの中身View
     private let innerView: UIView
 
-    init(focusPoint: CGPoint, viewSize: CGSize = CGSize(width: 120, height: 80),
+    init(focusPoint: CGPoint, contentView: UIView,
          color: UIColor, triangleBottomLength: CGFloat = 25, triangleHeight: CGFloat = 20) {
         self.color = color
         self.triangleBottomLength = triangleBottomLength
         self.triangleHeight = triangleHeight
+        let viewSize = CGSize(width: contentView.frame.size.width * 1.2,
+                              height: contentView.frame.size.height * 1.5 + triangleHeight)
         let frame = CGRect(origin: CGPoint(x: focusPoint.x - viewSize.width / 2,
                                            y: focusPoint.y - viewSize.height),
                            size: viewSize)
@@ -37,6 +39,9 @@ final class BalloonView: UIView {
         addSubview(innerView)
         innerView.layer.masksToBounds = true
         innerView.layer.cornerRadius = 10
+        // 吹き出し内のViewを設定
+        innerView.addSubview(contentView)
+        contentView.center = innerView.center
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -56,8 +61,9 @@ final class BalloonView: UIView {
 
         context.setFillColor(color.cgColor)
 
-        let leftEndPoint = CGPoint(x: rect.size.width / 2 - (triangleBottomLength / 2), y: rect.size.height - triangleHeight)
-        let rightEndPoint = CGPoint(x: leftEndPoint.x + triangleBottomLength, y: rect.size.height - triangleHeight)
+        // triangleHeight + 1の理由は足さないとなぜか隙間空く時がある
+        let leftEndPoint = CGPoint(x: rect.size.width / 2 - (triangleBottomLength / 2), y: rect.size.height - (triangleHeight + 1))
+        let rightEndPoint = CGPoint(x: leftEndPoint.x + triangleBottomLength, y: rect.size.height - (triangleHeight + 1))
         let tipCornerPoint = CGPoint(x: rect.size.width / 2, y: rect.maxY)
 
         // 開始点を指定
