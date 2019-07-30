@@ -15,6 +15,8 @@ final class BalloonView: UIView {
     private let triangleHeight: CGFloat
     // 塗りつぶしの色
     private let color: UIColor
+    // 吹き出しの中身View
+    private let innerView: UIView
 
     init(focusPoint: CGPoint, viewSize: CGSize = CGSize(width: 120, height: 80),
          color: UIColor, triangleBottomLength: CGFloat = 25, triangleHeight: CGFloat = 20) {
@@ -24,9 +26,17 @@ final class BalloonView: UIView {
         let frame = CGRect(origin: CGPoint(x: focusPoint.x - viewSize.width / 2,
                                            y: focusPoint.y - viewSize.height),
                            size: viewSize)
+        self.innerView = UIView(frame: CGRect(origin: .zero,
+                                              size: CGSize(width: viewSize.width,
+                                                           height: viewSize.height - triangleHeight)))
         super.init(frame: frame)
         // superViewを透明に（吹き出しのみを見せるため）
         backgroundColor = .clear
+        // 吹き出し内のViewを設定
+        innerView.backgroundColor = color
+        addSubview(innerView)
+        innerView.layer.masksToBounds = true
+        innerView.layer.cornerRadius = 10
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -43,18 +53,14 @@ final class BalloonView: UIView {
     }
 
     func contextBalloonPath(context: CGContext, rect: CGRect) {
-        // 指定した描画範囲をどの色で塗りつぶすか
+
         context.setFillColor(color.cgColor)
-        // 塗りつぶしの範囲（三角部分は下で別途範囲を指定していて、ここではあくまで四角形の塗りつぶし）
-        context.addRect(CGRect(x: rect.origin.x,
-                               y: rect.origin.y,
-                               width: rect.size.width,
-                               height: rect.size.height - triangleHeight))
 
         let leftEndPoint = CGPoint(x: rect.size.width / 2 - (triangleBottomLength / 2), y: rect.size.height - triangleHeight)
         let rightEndPoint = CGPoint(x: leftEndPoint.x + triangleBottomLength, y: rect.size.height - triangleHeight)
         let tipCornerPoint = CGPoint(x: rect.size.width / 2, y: rect.maxY)
 
+        // 開始点を指定
         context.move(to: leftEndPoint)
         // 移動点から二点以上指定して線を引かないと領域の確保がされずに短形は描画されない
         context.addLine(to: rightEndPoint)
