@@ -39,21 +39,22 @@ final class BalloonView: UIView {
             // UIGraphicsGetCurrentContextを用意できない場合は吹き出しは描画しない
             return
         }
-        // 指定した描画範囲をどの色で塗りつぶすか
-        context.setFillColor(color.cgColor)
         contextBalloonPath(context: context, rect: rect)
     }
 
     func contextBalloonPath(context: CGContext, rect: CGRect) {
-        let leftEndPoint = CGPoint(x: rect.size.width / 2 - (triangleBottomLength / 2), y: rect.size.height - triangleHeight)
-        let rightEndPoint = CGPoint(x: leftEndPoint.x + triangleBottomLength, y: rect.size.height - triangleHeight)
-        let tipCornerPoint = CGPoint(x: rect.size.width / 2, y: rect.maxY)
-
+        // 指定した描画範囲をどの色で塗りつぶすか
+        context.setFillColor(color.cgColor)
         // 塗りつぶしの範囲（三角部分は下で別途範囲を指定していて、ここではあくまで四角形の塗りつぶし）
         context.addRect(CGRect(x: rect.origin.x,
                                y: rect.origin.y,
                                width: rect.size.width,
                                height: rect.size.height - triangleHeight))
+
+        let leftEndPoint = CGPoint(x: rect.size.width / 2 - (triangleBottomLength / 2), y: rect.size.height - triangleHeight)
+        let rightEndPoint = CGPoint(x: leftEndPoint.x + triangleBottomLength, y: rect.size.height - triangleHeight)
+        let tipCornerPoint = CGPoint(x: rect.size.width / 2, y: rect.maxY)
+
         context.move(to: leftEndPoint)
         // 移動点から二点以上指定して線を引かないと領域の確保がされずに短形は描画されない
         context.addLine(to: rightEndPoint)
