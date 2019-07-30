@@ -8,13 +8,13 @@
 
 import UIKit
 
-class BalloonView: UIView {
+final class BalloonView: UIView {
     // 三角部分の幅
-    let triangleBottomLength: CGFloat
+    private let triangleBottomLength: CGFloat
     // 三角部分の高さ
-    let triangleHeight: CGFloat
+    private let triangleHeight: CGFloat
     // 塗りつぶしの色
-    let color: UIColor
+    private let color: UIColor
 
     init(focusPoint: CGPoint, viewSize: CGSize = CGSize(width: 120, height: 80),
          color: UIColor, triangleBottomLength: CGFloat = 25, triangleHeight: CGFloat = 20) {
