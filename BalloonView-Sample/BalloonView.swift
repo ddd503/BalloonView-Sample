@@ -15,7 +15,7 @@ final class BalloonView: UIView {
     private let triangleHeight: CGFloat
     // 塗りつぶしの色
     private let color: UIColor
-    // 吹き出しの中身View
+    // 吹き出しの内容が入るView
     private let innerView: UIView
 
     init(focusPoint: CGPoint, contentView: UIView,
@@ -34,7 +34,7 @@ final class BalloonView: UIView {
         super.init(frame: frame)
         // superViewを透明に（吹き出しのみを見せるため）
         backgroundColor = .clear
-        // 吹き出し内のViewを設定
+        // 吹き出し内容のViewを設定
         innerView.backgroundColor = color
         addSubview(innerView)
         innerView.layer.masksToBounds = true
@@ -61,7 +61,7 @@ final class BalloonView: UIView {
 
         context.setFillColor(color.cgColor)
 
-        // triangleHeight + 1の理由は足さないとなぜか隙間空く時がある
+        // 三角と内容Viewの間に隙間が空いてしまうため+1としている
         let leftEndPoint = CGPoint(x: rect.size.width / 2 - (triangleBottomLength / 2), y: rect.size.height - (triangleHeight + 1))
         let rightEndPoint = CGPoint(x: leftEndPoint.x + triangleBottomLength, y: rect.size.height - (triangleHeight + 1))
         let tipCornerPoint = CGPoint(x: rect.size.width / 2, y: rect.maxY)

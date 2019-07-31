@@ -14,8 +14,8 @@ class ViewController: UIViewController {
     @IBOutlet weak private var greenView: UIView!
     @IBOutlet weak private var yellowView: UIView!
 
+    // 赤色Viewのタップ時
     @IBAction func tappedRedView(_ sender: UITapGestureRecognizer) {
-        // 1行のみのラベル
         let titleLabel = UILabel(frame: CGRect(origin: .zero, size: .zero))
         titleLabel.textAlignment = .center
         titleLabel.text = "こんにちは！"
@@ -23,6 +23,7 @@ class ViewController: UIViewController {
         sender.showBalloonView(color: .white, contentView: titleLabel)
     }
 
+    // 青色Viewのタップ時
     @IBAction func tappedBlueView(_ sender: UITapGestureRecognizer) {
         // 複数行のラベル
         let titleLabel = UILabel(frame: CGRect(origin: .zero, size: .zero))
@@ -33,6 +34,7 @@ class ViewController: UIViewController {
         sender.showBalloonView(color: .white, contentView: titleLabel)
     }
 
+    // 緑色Viewのタップ時
     @IBAction func tappedGreenView(_ sender: UITapGestureRecognizer) {
         let titleLabel = UILabel(frame: CGRect(origin: .zero, size: .zero))
         titleLabel.textAlignment = .center
@@ -42,6 +44,7 @@ class ViewController: UIViewController {
         sender.showBalloonView(color: .white, contentView: titleLabel)
     }
 
+    // 黄色Viewのタップ時
     @IBAction func tappedYellowView(_ sender: UITapGestureRecognizer) {
         let button = UIButton(frame: CGRect(origin: .zero, size: CGSize(width: 100, height: 40)))
         button.backgroundColor = .blue
