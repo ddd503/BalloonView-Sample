@@ -9,6 +9,10 @@
 import UIKit
 
 class ViewController: UIViewController {
+    @IBOutlet weak private var redView: UIView!
+    @IBOutlet weak private var blueView: UIView!
+    @IBOutlet weak private var greenView: UIView!
+    @IBOutlet weak private var yellowView: UIView!
 
     @IBAction func tappedRedView(_ sender: UITapGestureRecognizer) {
         // 1行のみのラベル
@@ -32,24 +36,39 @@ class ViewController: UIViewController {
     @IBAction func tappedGreenView(_ sender: UITapGestureRecognizer) {
         let titleLabel = UILabel(frame: CGRect(origin: .zero, size: .zero))
         titleLabel.textAlignment = .center
-        titleLabel.text = "テキスト以外も\n入れられるよ！"
+        titleLabel.text = "テキスト以外も\n入れられるよ →"
         titleLabel.numberOfLines = 0
         titleLabel.sizeToFit()
         sender.showBalloonView(color: .white, contentView: titleLabel)
     }
 
     @IBAction func tappedYellowView(_ sender: UITapGestureRecognizer) {
-        let button = UIButton(frame: CGRect(origin: .zero, size: CGSize(width: 100, height: 50)))
+        let button = UIButton(frame: CGRect(origin: .zero, size: CGSize(width: 100, height: 40)))
         button.backgroundColor = .blue
-        button.setTitle("ボタン", for: .normal)
+        button.setTitle("おわり", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.setTitleColor(UIColor.white.withAlphaComponent(0.5), for: .highlighted)
+        button.addTarget(self, action: #selector(removeAllBalloonView(sender:)), for: .touchUpInside)
+        sender.showBalloonView(color: .white, contentView: button)
         button.layer.masksToBounds = true
         button.layer.cornerRadius = 5
-        sender.showBalloonView(color: .white, contentView: button)
     }
-    
+
+    @objc func removeAllBalloonView(sender: UIButton) {
+        let targetViews = [redView, blueView, greenView, yellowView]
+        targetViews.forEach { (targetView) in
+            targetView?.subviews.forEach({ (subView) in
+                if subView is BalloonView {
+                    UIView.animate(withDuration: 0.3, animations: {
+                        subView.alpha = 0
+                    }, completion: { (_) in
+                        subView.removeFromSuperview()
+                    })
+                }
+            })
+        }
+    }
 }
 
 private extension UITapGestureRecognizer {

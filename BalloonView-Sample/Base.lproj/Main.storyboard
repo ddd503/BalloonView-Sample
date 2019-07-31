@@ -72,6 +72,12 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="blueView" destination="Y1i-xc-X8r" id="cWu-Uh-JR2"/>
+                        <outlet property="greenView" destination="yNo-Ps-9d3" id="r5n-Cn-Eji"/>
+                        <outlet property="redView" destination="lwz-qg-k2A" id="lur-D5-MAR"/>
+                        <outlet property="yellowView" destination="28F-El-lYq" id="I8w-MI-YDv"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="hVW-fJ-tuu">
