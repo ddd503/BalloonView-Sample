@@ -13,7 +13,7 @@ class ViewController: UIViewController {
     @IBOutlet weak private var blueView: UIView!
     @IBOutlet weak private var greenView: UIView!
     @IBOutlet weak private var yellowView: UIView!
-
+    
     // 赤色Viewのタップ時
     @IBAction func tappedRedView(_ sender: UITapGestureRecognizer) {
         let titleLabel = UILabel(frame: CGRect(origin: .zero, size: .zero))
@@ -22,7 +22,7 @@ class ViewController: UIViewController {
         titleLabel.sizeToFit()
         sender.showBalloonView(color: .white, contentView: titleLabel)
     }
-
+    
     // 青色Viewのタップ時
     @IBAction func tappedBlueView(_ sender: UITapGestureRecognizer) {
         // 複数行のラベル
@@ -33,7 +33,7 @@ class ViewController: UIViewController {
         titleLabel.sizeToFit()
         sender.showBalloonView(color: .white, contentView: titleLabel)
     }
-
+    
     // 緑色Viewのタップ時
     @IBAction func tappedGreenView(_ sender: UITapGestureRecognizer) {
         let titleLabel = UILabel(frame: CGRect(origin: .zero, size: .zero))
@@ -43,7 +43,7 @@ class ViewController: UIViewController {
         titleLabel.sizeToFit()
         sender.showBalloonView(color: .white, contentView: titleLabel)
     }
-
+    
     // 黄色Viewのタップ時
     @IBAction func tappedYellowView(_ sender: UITapGestureRecognizer) {
         let button = UIButton(frame: CGRect(origin: .zero, size: CGSize(width: 100, height: 40)))
@@ -57,7 +57,7 @@ class ViewController: UIViewController {
         button.layer.masksToBounds = true
         button.layer.cornerRadius = 5
     }
-
+    
     @objc func removeAllBalloonView(sender: UIButton) {
         let targetViews = [redView, blueView, greenView, yellowView]
         targetViews.forEach { (targetView) in
@@ -77,22 +77,24 @@ class ViewController: UIViewController {
 private extension UITapGestureRecognizer {
     /// タップした場所にBalloonViewを表示する
     ///
-    /// - Parameter color: BalloonViewの色
+    /// - Parameters:
+    ///   - color: 吹き出しの色
+    ///   - contentView: 吹き出し内に入れたいView
     func showBalloonView(color: UIColor, contentView: UIView) {
         guard let tappedView = self.view else { return }
-
+        
         // 吹き出しの表示数はタップしたView内で1つのみとする
         tappedView.subviews.forEach {
             if $0 is BalloonView {
                 $0.removeFromSuperview()
             }
         }
-
+        
         let tapPosition = self.location(in: tappedView)
         let balloonView = BalloonView(focusPoint: tapPosition, contentView: contentView, color: color)
         balloonView.alpha = 0
         tappedView.addSubview(balloonView)
-
+        
         UIView.animate(withDuration: 0.3) {
             balloonView.alpha = 1.0
         }

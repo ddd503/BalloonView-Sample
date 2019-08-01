@@ -18,28 +18,38 @@ final class BalloonView: UIView {
     // 吹き出しの内容が入るView
     private let innerView: UIView
 
+    /// 吹き出しのイニシャライズ
+    ///
+    /// - Parameters:
+    ///   - focusPoint: 吹き出しが出る地点(三角形の頂点)
+    ///   - contentView: 吹き出しの中に入れたいView（今回は長方形のUILabelを渡しています）
+    ///   - color: 吹き出しの色
+    ///   - triangleBottomLength: 三角形部分の幅
+    ///   - triangleHeight: 三角形部分の高さ
     init(focusPoint: CGPoint, contentView: UIView,
          color: UIColor, triangleBottomLength: CGFloat = 25, triangleHeight: CGFloat = 20) {
+        // 各種プロパティに保持
         self.color = color
         self.triangleBottomLength = triangleBottomLength
         self.triangleHeight = triangleHeight
+        // 中に入れたいViewのサイズを元に親View(三角形部分含む)のサイズを決めます
         let viewSize = CGSize(width: contentView.frame.size.width * 1.2,
                               height: contentView.frame.size.height * 1.5 + triangleHeight)
         let frame = CGRect(origin: CGPoint(x: focusPoint.x - viewSize.width / 2,
                                            y: focusPoint.y - viewSize.height),
                            size: viewSize)
+        // 吹き出し内容View(三角形部分を含まない)のサイズを決めます
         self.innerView = UIView(frame: CGRect(origin: .zero,
                                               size: CGSize(width: viewSize.width,
                                                            height: viewSize.height - triangleHeight)))
         super.init(frame: frame)
-        // superViewを透明に（吹き出しのみを見せるため）
+        // 親のsuperViewを透明に（吹き出しのみを見せるため）
         backgroundColor = .clear
-        // 吹き出し内容のViewを設定
+        // 吹き出し内容Viewを設定
         innerView.backgroundColor = color
         addSubview(innerView)
         innerView.layer.masksToBounds = true
         innerView.layer.cornerRadius = 10
-        // 吹き出し内のViewを設定
         innerView.addSubview(contentView)
         contentView.center = innerView.center
     }
