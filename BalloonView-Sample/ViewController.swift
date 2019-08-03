@@ -20,7 +20,7 @@ class ViewController: UIViewController {
         titleLabel.textAlignment = .center
         titleLabel.text = "こんにちは！"
         titleLabel.sizeToFit()
-        sender.showBalloonView(color: .white, contentView: titleLabel, directionType: .lowerRight)
+        sender.showBalloonView(color: .white, contentView: titleLabel, directionType: .up)
     }
 
     // 青色Viewのタップ時
@@ -31,29 +31,29 @@ class ViewController: UIViewController {
         titleLabel.text = "タップ地点から\n吹き出しを出せる\nようにしました！"
         titleLabel.numberOfLines = 0
         titleLabel.sizeToFit()
-        sender.showBalloonView(color: .white, contentView: titleLabel, directionType: .right)
+        sender.showBalloonView(color: .white, contentView: titleLabel, directionType: .upperRight)
     }
 
     // 緑色Viewのタップ時
     @IBAction func tappedGreenView(_ sender: UITapGestureRecognizer) {
         let titleLabel = UILabel(frame: CGRect(origin: .zero, size: .zero))
-        titleLabel.textAlignment = .center
-        titleLabel.text = "テキスト以外も\n入れられるよ →"
+        titleLabel.textAlignment = .left
+        titleLabel.text = "吹き出し方向も\n指定できます！\n\n・上\n・下\n・右\n・左\n・右上\n・右下\n・左上\n・左下\n\nテキスト以外も\n入れられるよ →"
         titleLabel.numberOfLines = 0
         titleLabel.sizeToFit()
-        sender.showBalloonView(color: .white, contentView: titleLabel, directionType: .up)
+        sender.showBalloonView(color: .white, contentView: titleLabel, directionType: .lowerLeft)
     }
 
     // 黄色Viewのタップ時
     @IBAction func tappedYellowView(_ sender: UITapGestureRecognizer) {
-        let button = UIButton(frame: CGRect(origin: .zero, size: CGSize(width: 100, height: 40)))
+        let button = UIButton(frame: CGRect(origin: .zero, size: CGSize(width: 120, height: 60)))
         button.backgroundColor = .blue
         button.setTitle("おわり", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.setTitleColor(UIColor.white.withAlphaComponent(0.5), for: .highlighted)
         button.addTarget(self, action: #selector(removeAllBalloonView(sender:)), for: .touchUpInside)
-        sender.showBalloonView(color: .white, contentView: button, directionType: .lowerRight)
+        sender.showBalloonView(color: .white, contentView: button, directionType: .right)
         button.layer.masksToBounds = true
         button.layer.cornerRadius = 5
     }

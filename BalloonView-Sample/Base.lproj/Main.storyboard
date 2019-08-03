@@ -44,7 +44,7 @@
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="28F-El-lYq" userLabel="yellowView">
                                 <rect key="frame" x="207" y="448" width="207" height="448"/>
-                                <color key="backgroundColor" red="1" green="0.97064839347070975" blue="0.61875225094646802" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="1" green="0.96976593368381891" blue="0.36598657550985414" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <gestureRecognizers/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="whW-yZ-wFh" appends="YES" id="IAe-lX-PTV"/>

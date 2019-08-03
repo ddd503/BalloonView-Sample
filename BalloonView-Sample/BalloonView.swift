@@ -17,27 +17,6 @@ enum BalloonViewDirectionType {
     case lowerRight
     case upperLeft
     case lowerLeft
-
-    var degree: CGFloat {
-        switch self {
-        case .up:
-            return 90
-        case .under:
-            return 270
-        case .right:
-            return 0
-        case .left:
-            return 180
-        case .upperRight:
-            return 45
-        case .lowerRight:
-            return 315
-        case .upperLeft:
-            return 135
-        case .lowerLeft:
-            return 225
-        }
-    }
 }
 
 final class BalloonView: UIView {
@@ -45,14 +24,16 @@ final class BalloonView: UIView {
     private let triangleBottomLength: CGFloat
     // 三角部分の高さ
     private let triangleHeight: CGFloat
-    // 三角形のX軸の中央値
-    private let triangleBottomCenter: CGPoint
     // 吹き出しの色
     private let color: UIColor
     // 吹き出しの内容が入るView
     private let innerView: UIView
     // 吹き出すを出す方向
     private let directionType: BalloonViewDirectionType
+    // 中身のViewサイズと比較して拡張する吹き出しの幅
+    static private let expandWidth: CGFloat = 30
+    // 中身のViewサイズと比較して拡張する吹き出しの高さ
+    static private let expandHeight: CGFloat = 30
 
     /// 吹き出しのイニシャライズ
     ///
@@ -71,25 +52,21 @@ final class BalloonView: UIView {
         self.triangleBottomLength = triangleBottomLength
         self.triangleHeight = triangleHeight
 
-        self.triangleBottomCenter = BalloonView.circumferenceCoordinate(degree: 315, radius: triangleHeight)
-
         let viewFrame = BalloonView.getFrame(balloonDirection: directionType,
                                              focusPoint: focusPoint,
                                              contentViewSize: contentView.frame.size,
-                                             triangleBottomCenter: triangleBottomCenter)
+                                             triangleHeight: triangleHeight)
 
         self.innerView = UIView(frame: BalloonView.getInnerViewFrame(balloonDirection: directionType,
                                                                      parentViewFrame: viewFrame,
-                                                                     triangleBottomCenter: triangleBottomCenter))
+                                                                     triangleHeight: triangleHeight))
 
         super.init(frame: viewFrame)
 
         // BalloonView自体の背景を透明に（吹き出しのみを見せるため）
-//        backgroundColor = .clear
-        backgroundColor = .blue
+        backgroundColor = .clear
         // 吹き出し内容Viewを設定
-//        innerView.backgroundColor = self.color
-        innerView.backgroundColor = .red
+        innerView.backgroundColor = self.color
         addSubview(innerView)
         innerView.layer.masksToBounds = true
         innerView.layer.cornerRadius = 10
@@ -121,24 +98,48 @@ final class BalloonView: UIView {
     static private func getFrame(balloonDirection: BalloonViewDirectionType,
                                  focusPoint: CGPoint,
                                  contentViewSize: CGSize,
-                                 triangleBottomCenter: CGPoint) -> CGRect {
+                                 triangleHeight: CGFloat) -> CGRect {
         switch balloonDirection {
         case .up:
-            let size = CGSize(width: contentViewSize.width * 1.2,
-                              height: contentViewSize.height * 1.5 + triangleBottomCenter.y)
+            let size = CGSize(width: contentViewSize.width + BalloonView.expandWidth,
+                              height: contentViewSize.height + BalloonView.expandHeight + triangleHeight)
             let origin = CGPoint(x: focusPoint.x - size.width / 2, y: focusPoint.y - size.height)
             return CGRect(origin: origin, size: size)
+        case .under:
+            let size = CGSize(width: contentViewSize.width + BalloonView.expandWidth,
+                              height: contentViewSize.height + BalloonView.expandHeight + triangleHeight)
+            let origin = CGPoint(x: focusPoint.x - size.width / 2, y: focusPoint.y)
+            return CGRect(origin: origin, size: size)
         case .right:
-            let size = CGSize(width: contentViewSize.width * 1.3 + triangleBottomCenter.x,
-                              height: contentViewSize.height * 1.2)
+            let size = CGSize(width: contentViewSize.width + BalloonView.expandWidth + triangleHeight,
+                              height: contentViewSize.height + BalloonView.expandHeight)
             let origin = CGPoint(x: focusPoint.x, y: focusPoint.y - (size.height / 2))
             return CGRect(origin: origin, size: size)
-        case .lowerRight:
-            let origin = focusPoint
-            let size = CGSize(width: contentViewSize.width * 1.2,
-                              height: contentViewSize.height * 1.5 + triangleBottomCenter.y)
+        case .left:
+            let size = CGSize(width: contentViewSize.width + BalloonView.expandWidth + triangleHeight,
+                              height: contentViewSize.height + BalloonView.expandHeight)
+            let origin = CGPoint(x: focusPoint.x - size.width, y: focusPoint.y - (size.height / 2))
             return CGRect(origin: origin, size: size)
-        default: return .zero
+        case .upperRight:
+            let size = CGSize(width: contentViewSize.width + BalloonView.expandWidth,
+                              height: contentViewSize.height + BalloonView.expandHeight + triangleHeight)
+            let origin = CGPoint(x: focusPoint.x, y: focusPoint.y - size.height)
+            return CGRect(origin: origin, size: size)
+        case .lowerRight:
+            let size = CGSize(width: contentViewSize.width + BalloonView.expandWidth,
+                              height: contentViewSize.height + BalloonView.expandHeight + triangleHeight)
+            let origin = focusPoint
+            return CGRect(origin: origin, size: size)
+        case .upperLeft:
+            let size = CGSize(width: contentViewSize.width + BalloonView.expandWidth,
+                              height: contentViewSize.height + BalloonView.expandHeight + triangleHeight)
+            let origin = CGPoint(x: focusPoint.x - size.width, y: focusPoint.y - size.height)
+            return CGRect(origin: origin, size: size)
+        case .lowerLeft:
+            let size = CGSize(width: contentViewSize.width + BalloonView.expandWidth,
+                              height: contentViewSize.height + BalloonView.expandHeight + triangleHeight)
+            let origin = CGPoint(x: focusPoint.x - size.width, y: focusPoint.y)
+            return CGRect(origin: origin, size: size)
         }
     }
 
@@ -147,39 +148,45 @@ final class BalloonView: UIView {
     /// - Parameters:
     ///   - balloonDirection: 吹き出しを出す方向
     ///   - parentViewFrame: BalloonView自体のframe
-    ///   - triangleBottomCenter: 吹き出しの先端部分の三角形の中央値
+    ///   - triangleHeight: 三角形の高さ
     /// - Returns: 吹き出し内のコンテンツ部分のViewのframe
     static private func getInnerViewFrame(balloonDirection: BalloonViewDirectionType,
                                           parentViewFrame: CGRect,
-                                          triangleBottomCenter: CGPoint) -> CGRect {
+                                          triangleHeight: CGFloat) -> CGRect {
         switch balloonDirection {
         case .up:
             return CGRect(origin: .zero,
                           size: CGSize(width: parentViewFrame.size.width,
-                                       height: parentViewFrame.size.height - triangleBottomCenter.y))
+                                       height: parentViewFrame.size.height - triangleHeight))
+        case .under:
+            return CGRect(origin: CGPoint(x: .zero, y: triangleHeight),
+                          size: CGSize(width: parentViewFrame.size.width,
+                                       height: parentViewFrame.size.height - triangleHeight))
         case .right:
-            return CGRect(origin: CGPoint(x: triangleBottomCenter.x, y: 0),
-                          size: CGSize(width: parentViewFrame.size.width - triangleBottomCenter.x,
+            return CGRect(origin: CGPoint(x: triangleHeight, y: .zero),
+                          size: CGSize(width: parentViewFrame.size.width - triangleHeight,
                                        height: parentViewFrame.size.height))
-        case .lowerRight:
-            return CGRect(origin: CGPoint(x: 0, y: triangleBottomCenter.y),
+        case .left:
+            return CGRect(origin: .zero,
+                          size: CGSize(width: parentViewFrame.size.width - triangleHeight,
+                                       height: parentViewFrame.size.height))
+        case .upperRight:
+            return CGRect(origin: .zero,
                           size: CGSize(width: parentViewFrame.width,
-                                       height: parentViewFrame.height - triangleBottomCenter.y))
-        default: return .zero
+                                       height: parentViewFrame.height - triangleHeight))
+        case .lowerRight:
+            return CGRect(origin: CGPoint(x: .zero, y: triangleHeight),
+                          size: CGSize(width: parentViewFrame.width,
+                                       height: parentViewFrame.height - triangleHeight))
+        case .upperLeft:
+            return CGRect(origin: .zero,
+                          size: CGSize(width: parentViewFrame.width,
+                                       height: parentViewFrame.height - triangleHeight))
+        case .lowerLeft:
+            return CGRect(origin: CGPoint(x: .zero, y: triangleHeight),
+                          size: CGSize(width: parentViewFrame.width,
+                                       height: parentViewFrame.height - triangleHeight))
         }
-    }
-
-    /// 円周上の座標を返す
-    ///
-    /// - Parameters:
-    ///   - degree: 角度
-    ///   - radius: 半径
-    /// - Returns: 円周上の座標時
-    static private func circumferenceCoordinate(degree: Double, radius: CGFloat) -> CGPoint {
-        let θ = Double.pi / Double(-180) * Double(degree)
-        let x = Double(radius) * cos(θ)
-        let y = Double(radius) * sin(θ)
-        return CGPoint(x: x, y: y)
     }
 
     /// 吹き出しの三角形部分を描画する
@@ -191,7 +198,10 @@ final class BalloonView: UIView {
         // 三角部分の色
         context.setFillColor(color.cgColor)
         // 三角形の各頂点を取得
-        let cornerPoints = triangleCornerPoints(type: directionType, parentViewRect: rect)
+        let cornerPoints = triangleCornerPoints(directionType: directionType,
+                                                parentViewRect: rect,
+                                                triangleBottomLength: triangleBottomLength,
+                                                triangleHeight: triangleHeight)
         // 開始点を指定
         context.move(to: cornerPoints.top)
         // 移動点から二点以上指定して線を引かないと領域の確保がされずに短形は描画されない
@@ -203,30 +213,73 @@ final class BalloonView: UIView {
 
     /// 三角形の各頂点を決定する
     ///
-    /// - Parameter type: 吹き出しを出す方向
+    /// - Parameters:
+    ///   - directionType: 吹き出しを出す方向
+    ///   - parentViewRect: BalloonView自体のframe
+    ///   - triangleBottomLength: 三角形の底辺の長さ
+    ///   - triangleHeight: 三角形の高さ
     /// - Returns: 各定点の座標
-    private func triangleCornerPoints(type: BalloonViewDirectionType, parentViewRect: CGRect) -> (top: CGPoint, left: CGPoint, right: CGPoint) {
-        switch type {
+    private func triangleCornerPoints(directionType: BalloonViewDirectionType,
+                                      parentViewRect: CGRect,
+                                      triangleBottomLength: CGFloat,
+                                      triangleHeight: CGFloat) -> (top: CGPoint, left: CGPoint, right: CGPoint) {
+        switch directionType {
         case .up:
-            let top = CGPoint(x: parentViewRect.origin.x + (parentViewRect.size.width / 2),
-                              y: parentViewRect.origin.y + parentViewRect.size.height)
+            let top = CGPoint(x: parentViewRect.size.width / 2,
+                              y: parentViewRect.size.height)
             let left = CGPoint(x: top.x - (triangleBottomLength / 2), y: top.y - triangleHeight)
             let right = CGPoint(x: top.x + (triangleBottomLength / 2), y: left.y)
             return (top, left, right)
+        case .under:
+            let top = CGPoint(x: parentViewRect.size.width / 2,
+                              y: .zero)
+            let left = CGPoint(x: top.x - (triangleBottomLength / 2), y: top.y + triangleHeight)
+            let right = CGPoint(x: top.x + (triangleBottomLength / 2), y: left.y)
+            return (top, left, right)
         case .right:
-            let top = CGPoint(x: parentViewRect.origin.x, y: parentViewRect.origin.y + (parentViewRect.size.height / 2))
-            let left = CGPoint(x: innerView.frame.origin.x,
-                               y: innerView.frame.origin.y + (innerView.frame.size.height / 2) - (triangleBottomLength / 2))
-            let right = CGPoint(x: innerView.frame.origin.x,
-                                y: innerView.frame.origin.y + (innerView.frame.size.height / 2) + (triangleBottomLength / 2))
+            let top = CGPoint(x: .zero,
+                              y: parentViewRect.size.height / 2)
+            let left = CGPoint(x: top.x + triangleHeight,
+                               y: top.y - (triangleBottomLength / 2))
+            let right = CGPoint(x: left.x,
+                                y: top.y + (triangleBottomLength / 2))
+            return (top, left, right)
+        case .left:
+            let top = CGPoint(x: parentViewRect.size.width,
+                              y: parentViewRect.size.height / 2)
+            let left = CGPoint(x: top.x - triangleHeight,
+                               y: top.y - (triangleBottomLength / 2))
+            let right = CGPoint(x: left.x,
+                                y: top.y + (triangleBottomLength / 2))
+            return (top, left, right)
+        case .upperRight:
+            let top = CGPoint(x: parentViewRect.origin.x, y: parentViewRect.size.height)
+            let left = CGPoint(x: top.x + (parentViewRect.size.width * 0.2 - (triangleBottomLength / 2)),
+                               y: top.y - triangleHeight)
+            let right = CGPoint(x: top.x + (parentViewRect.size.width * 0.2 + (triangleBottomLength / 2)),
+                                y: left.y)
             return (top, left, right)
         case .lowerRight:
             let top = parentViewRect.origin
-            let left = CGPoint(x: (triangleBottomCenter.x - innerView.frame.origin.x) * 0.8, y: innerView.frame.origin.y)
-            let right = CGPoint(x: triangleBottomCenter.x + triangleBottomLength, y: innerView.frame.origin.y)
+            let left = CGPoint(x: top.x + (parentViewRect.size.width * 0.2 - (triangleBottomLength / 2)),
+                               y: top.y + triangleHeight)
+            let right = CGPoint(x: top.x + (parentViewRect.size.width * 0.2 + (triangleBottomLength / 2)),
+                                y: left.y)
             return (top, left, right)
-        default:
-            return (.zero, .zero, .zero) // TODO: 他のtypeの場合も決める
+        case .upperLeft:
+            let top = CGPoint(x: parentViewRect.size.width, y: parentViewRect.size.height)
+            let left = CGPoint(x: top.x - (parentViewRect.size.width * 0.2 - (triangleBottomLength / 2)),
+                               y: top.y - triangleHeight)
+            let right = CGPoint(x: top.x - (parentViewRect.size.width * 0.2 + (triangleBottomLength / 2)),
+                                y: left.y)
+            return (top, left, right)
+        case .lowerLeft:
+            let top = CGPoint(x: parentViewRect.size.width, y: .zero)
+            let left = CGPoint(x: top.x - (parentViewRect.size.width * 0.2 + (triangleBottomLength / 2)),
+                               y: top.y + triangleHeight)
+            let right = CGPoint(x: top.x - (parentViewRect.size.width * 0.2 - (triangleBottomLength / 2)),
+                                y: left.y)
+            return (top, left, right)
         }
     }
 }
