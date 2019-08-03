@@ -41,7 +41,7 @@ class ViewController: UIViewController {
         titleLabel.text = "テキスト以外も\n入れられるよ →"
         titleLabel.numberOfLines = 0
         titleLabel.sizeToFit()
-        sender.showBalloonView(color: .white, contentView: titleLabel, directionType: .lowerRight)
+        sender.showBalloonView(color: .white, contentView: titleLabel, directionType: .up)
     }
 
     // 黄色Viewのタップ時
