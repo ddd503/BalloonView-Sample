@@ -31,7 +31,7 @@ class ViewController: UIViewController {
         titleLabel.text = "タップ地点から\n吹き出しを出せる\nようにしました！"
         titleLabel.numberOfLines = 0
         titleLabel.sizeToFit()
-        sender.showBalloonView(color: .white, contentView: titleLabel, directionType: .lowerRight)
+        sender.showBalloonView(color: .white, contentView: titleLabel, directionType: .right)
     }
 
     // 緑色Viewのタップ時
