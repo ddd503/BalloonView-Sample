@@ -66,20 +66,14 @@ final class BalloonView: UIView {
         innerView.layer.masksToBounds = true
         innerView.layer.cornerRadius = 10
 
-        guard let context = UIGraphicsGetCurrentContext() else {
-            // UIGraphicsGetCurrentContextを用意できない場合は吹き出しは描画しない
-            return
-        }
-
-        contextBalloonPath(context: context, rect: rect)
+        // 吹き出しの三角形部分を描画する
+        drawBalloonPath(rect: rect)
     }
 
     /// 吹き出しの三角形部分を描画する
     ///
-    /// - Parameters:
-    ///   - context: UIGraphicsGetCurrentContext
-    ///   - rect: BalloonView自体のFrame
-    func contextBalloonPath(context: CGContext, rect: CGRect) {
+    /// - Parameter rect: BalloonView自体のFrame
+    func drawBalloonPath(rect: CGRect) {
         // 三角形の各頂点を取得
         let cornerPoints = directionType.triangleCornerPoints(superViewRect: rect,
                                                               triangleBottomLength: triangleBottomLength,
