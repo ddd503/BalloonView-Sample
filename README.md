@@ -1,7 +1,7 @@
 # BalloonView-Sample
 タップ位置から吹き出しっぽいViewが描画されるサンプル
 
-<img src="https://github.com/ddd503/Image-Resource/raw/master/balloonView-action.gif" width="300">
+<img src="https://github.com/ddd503/Image-Resource/raw/master/balloonView-action2.gif" width="300">
 
 # 開発環境
 
