@@ -20,7 +20,7 @@ final class BalloonView: UIView {
     // 吹き出し内のコンテンツ部分を管理するView
     private let innerView: UIView
 
-    /// 吹き出しのイニシャライズ
+    /// イニシャライズ
     ///
     /// - Parameters:
     ///   - focusPoint: 吹き出しが出る地点(三角形の頂点)
