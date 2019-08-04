@@ -17,6 +17,8 @@ final class BalloonView: UIView {
     private let triangleBottomLength: CGFloat
     // 三角部分の高さ
     private let triangleHeight: CGFloat
+    // 吹き出し内のコンテンツ部分を管理するView
+    private let innerView: UIView
 
     /// 吹き出しのイニシャライズ
     ///
@@ -42,16 +44,15 @@ final class BalloonView: UIView {
         // 吹き出しの内容部分描画用のViewを用意
         let innerViewSize = directionType.innerViewSize(superViewFrame: viewFrame, triangleHeight: triangleHeight)
         let innerViewOrigin = directionType.innerViewOrigin(triangleHeight: triangleHeight)
-        let innerView = UIView(frame: CGRect(origin: innerViewOrigin, size: innerViewSize))
+        innerView = UIView(frame: CGRect(origin: innerViewOrigin, size: innerViewSize))
 
         super.init(frame: viewFrame)
 
         // BalloonView自体の背景を透明に（吹き出しのみを見せるため）
         backgroundColor = .clear
+
         innerView.backgroundColor = color
         addSubview(innerView)
-        innerView.layer.masksToBounds = true
-        innerView.layer.cornerRadius = 10
         innerView.addSubview(contentView)
         contentView.center = self.convert(innerView.center, to: innerView)
     }
@@ -62,10 +63,14 @@ final class BalloonView: UIView {
 
     override func draw(_ rect: CGRect) {
         super.draw(rect)
+        innerView.layer.masksToBounds = true
+        innerView.layer.cornerRadius = 10
+
         guard let context = UIGraphicsGetCurrentContext() else {
             // UIGraphicsGetCurrentContextを用意できない場合は吹き出しは描画しない
             return
         }
+
         contextBalloonPath(context: context, rect: rect)
     }
 
@@ -75,18 +80,19 @@ final class BalloonView: UIView {
     ///   - context: UIGraphicsGetCurrentContext
     ///   - rect: BalloonView自体のFrame
     func contextBalloonPath(context: CGContext, rect: CGRect) {
-        // 三角部分の色
-        context.setFillColor(color.cgColor)
         // 三角形の各頂点を取得
         let cornerPoints = directionType.triangleCornerPoints(superViewRect: rect,
                                                               triangleBottomLength: triangleBottomLength,
                                                               triangleHeight: triangleHeight)
-        // 開始点を指定
-        context.move(to: cornerPoints.top)
-        // 移動点から二点以上指定して線を引かないと領域の確保がされずに短形は描画されない
-        context.addLine(to: cornerPoints.left)
-        context.addLine(to: cornerPoints.right)
-        // 描画開始
-        context.fillPath()
+        // 三角形の描画
+        let triangle = UIBezierPath()
+        triangle.move(to: cornerPoints.left)
+        triangle.addLine(to: cornerPoints.top)
+        triangle.addLine(to: cornerPoints.right)
+        triangle.close()
+        // 内側の色をセット
+        color.setFill()
+        // 内側を塗りつぶす
+        triangle.fill()
     }
 }

@@ -116,40 +116,45 @@ enum BalloonViewDirectionType {
         let top: CGPoint
         let left: CGPoint
         let right: CGPoint
+        let triangleBottomLengthHalf = triangleBottomLength / 2
+        // 斜め方向の三角部分の開始位置決定用
+        let diagonallyDirectionTriangleBottomCenterX = superViewRect.size.width * 0.2
+        let shortLength = diagonallyDirectionTriangleBottomCenterX - triangleBottomLengthHalf
+        let longLength = diagonallyDirectionTriangleBottomCenterX + triangleBottomLengthHalf
 
         switch self {
         case .up:
             top = CGPoint(x: superViewRect.size.width / 2, y: superViewRect.size.height)
-            left = CGPoint(x: top.x - (triangleBottomLength / 2), y: top.y - triangleHeight)
-            right = CGPoint(x: top.x + (triangleBottomLength / 2), y: left.y)
+            left = CGPoint(x: top.x + triangleBottomLengthHalf, y: top.y - triangleHeight)
+            right = CGPoint(x: top.x - triangleBottomLengthHalf, y: left.y)
         case .under:
             top = CGPoint(x: superViewRect.size.width / 2, y: .zero)
-            left = CGPoint(x: top.x - (triangleBottomLength / 2), y: top.y + triangleHeight)
-            right = CGPoint(x: top.x + (triangleBottomLength / 2), y: left.y)
+            left = CGPoint(x: top.x - triangleBottomLengthHalf, y: top.y + triangleHeight)
+            right = CGPoint(x: top.x + triangleBottomLengthHalf, y: left.y)
         case .right:
             top = CGPoint(x: .zero, y: superViewRect.size.height / 2)
-            left = CGPoint(x: top.x + triangleHeight, y: top.y - (triangleBottomLength / 2))
-            right = CGPoint(x: left.x, y: top.y + (triangleBottomLength / 2))
+            left = CGPoint(x: top.x + triangleHeight, y: top.y + triangleBottomLengthHalf)
+            right = CGPoint(x: left.x, y: top.y - triangleBottomLengthHalf)
         case .left:
             top = CGPoint(x: superViewRect.size.width, y: superViewRect.size.height / 2)
-            left = CGPoint(x: top.x - triangleHeight, y: top.y - (triangleBottomLength / 2))
-            right = CGPoint(x: left.x, y: top.y + (triangleBottomLength / 2))
+            left = CGPoint(x: top.x - triangleHeight, y: top.y - triangleBottomLengthHalf)
+            right = CGPoint(x: left.x, y: top.y + triangleBottomLengthHalf)
         case .upperRight:
             top = CGPoint(x: superViewRect.origin.x, y: superViewRect.size.height)
-            left = CGPoint(x: top.x + (superViewRect.size.width * 0.2 - (triangleBottomLength / 2)), y: top.y - triangleHeight)
-            right = CGPoint(x: top.x + (superViewRect.size.width * 0.2 + (triangleBottomLength / 2)), y: left.y)
+            left = CGPoint(x: top.x + longLength, y: top.y - triangleHeight)
+            right = CGPoint(x: top.x + shortLength, y: left.y)
         case .lowerRight:
             top = superViewRect.origin
-            left = CGPoint(x: top.x + (superViewRect.size.width * 0.2 - (triangleBottomLength / 2)), y: top.y + triangleHeight)
-            right = CGPoint(x: top.x + (superViewRect.size.width * 0.2 + (triangleBottomLength / 2)), y: left.y)
+            left = CGPoint(x: top.x + shortLength, y: top.y + triangleHeight)
+            right = CGPoint(x: top.x + longLength, y: left.y)
         case .upperLeft:
             top = CGPoint(x: superViewRect.size.width, y: superViewRect.size.height)
-            left = CGPoint(x: top.x - (superViewRect.size.width * 0.2 - (triangleBottomLength / 2)), y: top.y - triangleHeight)
-            right = CGPoint(x: top.x - (superViewRect.size.width * 0.2 + (triangleBottomLength / 2)), y: left.y)
+            left = CGPoint(x: top.x - shortLength, y: top.y - triangleHeight)
+            right = CGPoint(x: top.x - longLength, y: left.y)
         case .lowerLeft:
             top = CGPoint(x: superViewRect.size.width, y: .zero)
-            left = CGPoint(x: top.x - (superViewRect.size.width * 0.2 + (triangleBottomLength / 2)), y: top.y + triangleHeight)
-            right = CGPoint(x: top.x - (superViewRect.size.width * 0.2 - (triangleBottomLength / 2)), y: left.y)
+            left = CGPoint(x: top.x - longLength, y: top.y + triangleHeight)
+            right = CGPoint(x: top.x - shortLength, y: left.y)
         }
 
         return (top, left, right)
